@@ -28,6 +28,7 @@ const {chromium}=require('playwright');const assert=require('node:assert/strict'
   await page.setViewportSize(viewport);await page.waitForTimeout(150);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);
   assert.equal(await page.locator('header').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+  const rollBounds=await page.locator('#roll').boundingBox();assert.ok(rollBounds.y+rollBounds.height<=viewport.height,'Roll controls must fit within the viewport');
   if(viewport.width<760){const button=await page.locator('#roll').boundingBox(),nav=await page.locator('.mobile-nav').boundingBox();assert.ok(button.y+button.height<=nav.y,'Roll button must fit above navigation');}
  }
  await page.setViewportSize({width:1360,height:900});await page.waitForTimeout(300);await page.screenshot({path:'aura-vale-desktop.png'});
