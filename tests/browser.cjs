@@ -12,8 +12,15 @@ const {chromium}=require('playwright');const assert=require('node:assert/strict'
  await page.locator('[data-screen="gear"]').click();await page.locator('[data-craft]').click();assert.equal(await page.evaluate(()=>AuraVale.state.gear),1);assert.equal(await page.evaluate(()=>AuraVale.state.inventory[0]),1);
  await page.locator('[data-screen="roll"]').click();await page.locator('#roll').click();await page.waitForFunction(()=>!AuraVale.busy);assert.equal(await page.evaluate(()=>AuraVale.state.rolls),25);assert.equal(await page.locator('#auto').isDisabled(),false);
  await page.locator('#auto').click();const before=await page.evaluate(()=>AuraVale.state.rolls);await page.waitForFunction(n=>AuraVale.state.rolls>n,before);await page.locator('#auto').click();assert.equal(await page.evaluate(()=>AuraVale.auto),false);await page.waitForFunction(()=>!AuraVale.busy);
- await page.locator('[data-screen="auras"]').click();await page.locator('[data-equip="drift"]').click();assert.equal(await page.evaluate(()=>AuraVale.state.equipped),'drift');
+ await page.locator('[data-screen="auras"]').click();
+ assert.equal(await page.locator('.aura-card').count(),80);
+ await page.locator('#aura-search').fill('firstlight');assert.equal(await page.locator('.aura-card').count(),1);
+ await page.locator('#aura-search').fill('');await page.locator('#aura-filter').selectOption('found');assert.ok(await page.locator('.aura-card').count()<80);
+ await page.locator('#aura-filter').selectOption('all');await page.locator('[data-equip="drift"]').click();assert.equal(await page.evaluate(()=>AuraVale.state.equipped),'drift');
  await page.locator('[data-screen="goals"]').click();const dust=await page.evaluate(()=>AuraVale.state.dust);await page.locator('[data-claim="first"]').click();assert.equal(await page.evaluate(()=>AuraVale.state.dust),dust+30);assert.equal(await page.locator('[data-claim="first"]').count(),0);
+ await page.locator('[data-screen="gear"]').click();await page.locator('#gear-choice').selectOption('0');assert.equal(await page.evaluate(()=>AuraVale.state.activeGear),0);
+ await page.locator('#gear-choice').selectOption('1');assert.equal(await page.evaluate(()=>AuraVale.state.activeGear),1);
+ await page.evaluate(()=>{AuraVale.state.rolls=300;AuraVale.render();});
  await page.locator('[data-screen="roll"]').click();assert.equal(await page.locator('#reveal').evaluate(e=>e.classList.contains('show')),false);
  await page.locator('#settings').click();await page.locator('#sound-toggle').click();await page.locator('#close-settings').click();assert.equal(await page.evaluate(()=>AuraVale.state.sound),false);
  await page.reload();await page.waitForFunction(()=>window.AuraVale?.state);assert.equal(await page.evaluate(()=>AuraVale.state.gear),1);assert.equal(await page.evaluate(()=>AuraVale.state.equipped),'drift');

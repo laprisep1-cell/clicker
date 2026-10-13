@@ -37,12 +37,16 @@ export function createScene(canvas,getState){
       if(a.kind==='ice'){star(px,py,6,col);}else if(a.kind==='petals'){rect(px,py,3,5,col);rect(px+2,py-1,3,2,col);}else{rect(px,py,i%3?2:4,i%3?2:4,col);}
     }
     ctx.globalAlpha=1;
+    if(a.variant){
+      ctx.strokeStyle=c+'60';ctx.beginPath();ctx.ellipse(x,y-38,52+a.variant*6,60+a.variant*4,t*.07,0,Math.PI*2);ctx.stroke();
+      for(let k=0;k<a.variant+2;k++){const angle=t*.2+k*Math.PI*2/(a.variant+2);star(x+Math.cos(angle)*86,y-45+Math.sin(angle)*70,5+a.variant,c);}
+    }
     if(a.kind==='lightning'){const cycle=Math.floor(t*5);for(let k=0;k<3;k++){const xx=x-60+k*60;ctx.beginPath();ctx.moveTo(xx,y-95);ctx.lineTo(xx+rand(cycle+k)*12,y-63);ctx.lineTo(xx-8,y-56);ctx.lineTo(xx+4,y-25);ctx.strokeStyle=c+(k===cycle%3?'ee':'55');ctx.stroke();}}
     if(a.kind==='crown'){rect(x-20,y-102,40,7,c);for(let k=0;k<3;k++)rect(x-18+k*15,y-112-(k===1?5:0),6,12,c);}
     ctx.restore();
   }
   function draw(ms){
-    requestAnimationFrame(draw);if(document.hidden)return;const state=getState();if(!state)return;const t=reduced?0:ms/1000,wi=Math.floor(state.rolls/60)%4,p=palettes[wi],ground=h*.76,x=w/2,y=ground-8;
+    requestAnimationFrame(draw);if(document.hidden)return;const state=getState();if(!state)return;const t=reduced?0:ms/1000,skyWeather=weather(state),wi=skyWeather.visual,p=[...skyWeather.colors,...palettes[wi].slice(2)],ground=h*.76,x=w/2,y=ground-8;
     const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,p[0]);sky.addColorStop(1,p[1]);ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
     if(wi>=2)for(let i=0;i<45;i++){ctx.globalAlpha=.4+Math.sin(t*.8+i)*.25;star(rand(i+90)*w,rand(i+190)*h*.48,3,'#f5e6cb');}ctx.globalAlpha=1;
     const orbX=w*.79,orbY=h*.22;ctx.fillStyle=wi<2?'#e8efd85c':'#f0e5d69c';ctx.beginPath();ctx.arc(orbX,orbY,wi<2?23:18,0,Math.PI*2);ctx.fill();
@@ -56,6 +60,7 @@ export function createScene(canvas,getState){
     for(const side of [-1,1]){const xx=x+side*130;rect(xx-5,ground-37,10,40,'#526773');rect(xx-10,ground-43,20,8,'#758d8c');rect(xx-3,ground-40,6,6,'#dbe5b8');star(xx,ground-37,11,'#e9f2b252');}
     for(let i=0;i<20;i++){const xx=rand(i+44)*w,yy=ground+38+rand(i+25)*(h-ground-38);rect(xx,yy,2,5,'#80a29a');if(i%3===0)rect(xx-1,yy-2,4,3,'#d0cbb2');}
     if(wi===1){ctx.strokeStyle='#d4e6ef50';ctx.lineWidth=1;for(let i=0;i<35;i++){const xx=(rand(i+70)*w+t*15)%w,yy=(rand(i+71)*h+t*70)%h;ctx.beginPath();ctx.moveTo(xx,yy);ctx.lineTo(xx-2,yy+9);ctx.stroke();}}
+    if(skyWeather.name==='Snow'||skyWeather.name==='Crystal rain'){for(let i=0;i<25;i++)star((rand(i+110)*w+Math.sin(t+i)*8)%w,(rand(i+115)*h+t*13)%h,4,'#e7fbff80');}
     if(wi===3){for(let i=0;i<6;i++){const xx=(rand(i+60)*w+t*8)%w,yy=(rand(i+65)*h*.6+t*6)%(h*.6);star(xx,yy,5,'#fff0d4aa');}}
     const a=AURAS.find(a=>a.id===state.equipped);aura(a,x,y,t);avatar(x,y,t);
     for(let i=0;i<9;i++){const xx=rand(i+88)*w,yy=ground-10-Math.sin(t*.7+i)*35;rect(xx,yy,2,2,'#e0f4ae80');}

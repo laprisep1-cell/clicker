@@ -4,7 +4,7 @@ An original, offline 2D aura clicker with a pixel valley and magical character e
 
 ## Play
 
-Tap **Roll aura** (or press Space on desktop). Discover 16 auras and choose one to wear. Every 10th roll has double luck. Auto roll unlocks after 25 rolls. Dust and extra copies craft five levels of gear, and luck potions last 20 rolls. Weather changes every 60 rolls and favors different auras. Eight goals award dust and potions once each.
+Tap **Roll aura** (or press Space on desktop). Discover 80 auras and choose one to wear. Every 10th roll has double luck. Auto roll unlocks after 25 rolls. Dust and extra copies craft 25 levels of gear, and luck potions last 20 rolls. 20 weather states change every 60 rolls and favors different auras. 40 goals award dust and potions once each.
 
 All rolls are free. There are no accounts, ads, paid rolls, purchases, or cash prizes. Progress saves locally under `aura-vale-save-v1`. Auto roll stops while the app is hidden. Potions count rolls rather than elapsed time. Crafting always keeps the last copy of an aura. The UI displays rounded baseline odds; actual chances account for gear, potions, the 10th-roll bonus, and weather.
 

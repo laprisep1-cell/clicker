@@ -32,7 +32,7 @@ for folder,data in [('mipmap-anydpi',vector),('mipmap-anydpi-v26',adaptive)]:
 
 # Keep test updates compatible through an explicit project-local cached debug key.
 gradle=Path('android/app/build.gradle')
-gradle.write_text(gradle.read_text()+'''
+gradle.write_text(gradle.read_text().replace('versionCode 1','versionCode 2').replace('versionName "1.0"','versionName "1.1"')+'''
 android {
  signingConfigs {
   debug {
