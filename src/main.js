@@ -1,4 +1,3 @@
-import {Capacitor,SystemBars,SystemBarsStyle} from '@capacitor/core';
 import * as E from './engine.js';
 import {createScene} from './scene.js';
 const $=id=>document.getElementById(id),KEY='aura-vale-save-v1';
@@ -70,7 +69,7 @@ $('panel-content').onclick=e=>{const b=e.target.closest('button');if(!b||b.disab
 $('settings').onclick=()=>{set('sound-toggle','Sound: '+(state.sound?'on':'off'));set('auto-equip-toggle','Wear best aura: '+(state.autoEquip?'on':'off'));$('settings-dialog').showModal();};$('close-settings').onclick=()=>$('settings-dialog').close();$('sound-toggle').onclick=()=>{state.sound=!state.sound;save();set('sound-toggle','Sound: '+(state.sound?'on':'off'));sound(3);};
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat&&!['BUTTON','INPUT','TEXTAREA'].includes(e.target.tagName)&&!$('settings-dialog').open){e.preventDefault();startRoll();}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){save();clearReveal();}});window.addEventListener('pagehide',save);
-if(Capacitor.getPlatform()==='android')SystemBars.setStyle({style:SystemBarsStyle.Dark}).catch(()=>{});
+if(window.androidBridge||window.webkit?.messageHandlers?.bridge){import('@capacitor/core').then(({SystemBars,SystemBarsStyle})=>SystemBars.setStyle({style:SystemBarsStyle.Dark})).catch(()=>{});}
 window.AuraVale={get state(){return state;},roll:startRoll,render,choosePanel,get busy(){return busy;},get auto(){return auto;},get lastResult(){return lastResult;}};
 render();save();
 

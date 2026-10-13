@@ -33,6 +33,8 @@ const {chromium}=require('playwright');const assert=require('node:assert/strict'
  await page.setViewportSize({width:1360,height:900});await page.waitForTimeout(300);await page.screenshot({path:'aura-vale-desktop.png'});
  await page.setViewportSize({width:360,height:800});await page.waitForTimeout(300);await page.screenshot({path:'aura-vale-phone.png'});
  await page.locator('[data-screen="auras"]').click();await page.screenshot({path:'aura-vale-collection.png'});
+ const raw=await browser.newPage({viewport:{width:360,height:800}});raw.on('pageerror',e=>errors.push(e.message));
+ await raw.goto('http://127.0.0.1:8766');await raw.waitForFunction(()=>window.AuraVale?.state);await raw.locator('#roll').click();await raw.waitForFunction(()=>!AuraVale.busy);assert.equal(await raw.evaluate(()=>AuraVale.state.rolls),1);
  assert.deepEqual(errors,[]);console.log('Passed: rolls, saved progress, potions, crafting, auto roll, equipment, one-time goals, tab popup cleanup, settings, four responsive sizes, no runtime errors.');
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});

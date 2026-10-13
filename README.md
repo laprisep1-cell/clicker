@@ -8,6 +8,10 @@ Tap **Roll aura** (or press Space on desktop). Discover 80 auras and choose one 
 
 All rolls are free. There are no accounts, ads, paid rolls, purchases, or cash prizes. Progress saves locally under `aura-vale-save-v1`. Auto roll stops while the app is hidden. Potions count rolls rather than elapsed time. Crafting always keeps the last copy of an aura. The UI displays rounded baseline odds; actual chances account for gear, potions, the 10th-roll bonus, and weather.
 
+## Browser
+
+The root page is also a buildless browser game compatible with the repository's GitHub Pages hosting. Native Android support loads only inside the Android wrapper. Browser and Android saves are separate.
+
 ## Android
 
 The Actions workflow **Build Aura Vale Android APK** tests the game, checks four screen sizes, generates the native project, and uploads an installable debug APK. This is a playtest build, not a Play Store release. The project-local debug key is cached for compatible test updates; production release signing requires a separately backed-up upload key.

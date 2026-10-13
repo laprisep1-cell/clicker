@@ -30,7 +30,9 @@ jobs:
           npx playwright install --with-deps chromium
           python3 -m http.server 8765 --directory dist > /tmp/aura-vale-preview.log 2>&1 &
           server_pid=$!
-          trap 'kill "$server_pid"' EXIT
+          python3 -m http.server 8766 --directory . > /tmp/aura-vale-source.log 2>&1 &
+          source_pid=$!
+          trap 'kill "$server_pid" "$source_pid"' EXIT
           node tests/browser.cjs
       - name: Generate Android project
         run: |
